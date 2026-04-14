@@ -1,0 +1,348 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Actividad 3</title>
+</head>
+<body>
+    <style>
+        body{
+            display: flex;
+            justify-content: center;
+        }
+        main{
+            width:max(50vw,400px);
+            background-color: rgb(169, 169, 187);
+        }
+        #opciones{
+            display: flex;
+            padding: 0%;
+            margin-bottom: 0%;
+            li{
+                display: inline-block;
+                position: relative;
+                flex: 2;
+
+                border: 2px solid black;
+                /* border-right: 0px transparent; */
+
+                padding:2% 1%;
+            }
+            /* .activo::after{
+                display: block;
+                content: "";
+
+                position: absolute;
+                width: 0;
+                height: 0;
+                border-right: 50px solid transparent;
+                border-bottom: 100px solid red;
+
+                right: -10%;
+            } */
+            .activo{
+                flex:4;
+                background-color: white;
+            }
+        }
+        .espacio-ejercicio{
+            display: none;
+            padding:5%;
+
+            .fila{
+                width:100%;
+            }
+        }
+        .espacio-activo{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+
+            padding-top: 5%;
+            padding-bottom: 5%;
+            border:2px solid black;
+            
+            .fila{
+                margin:2%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+        }
+        #n_usos_vocales{
+            margin-bottom: 0%;
+        }
+
+        *{
+            text-align: justify;
+        }
+        #numero_combinaciones{
+            padding-left:5%;
+        }
+    </style>
+
+    <main>
+        <ul id="opciones">
+            <li data-num_ejercicio="1" class="opcion-seleccion">Ejecicio 1</li>
+            <li data-num_ejercicio="2" class="opcion-seleccion">Ejecicio 2</li>
+            <li data-num_ejercicio="3" class="opcion-seleccion activo">Ejecicio 3</li>
+        </ul>
+
+        <section class="espacio-ejercicio" id="ejercicio-1">
+            <b class="">Ingrese 2 cadenas:</b>
+            <div class="fila">
+                <label for="">Cadena 1:</label>
+                <input value="Hola" type="text" id="cadena-1"> <br>
+            </div>
+            <label for="" id="longitud-cad-1">Longitud :</label>
+
+            <div class="fila">
+                <label for="">Cadena 2:</label>
+                <input value="mundo" type="text" id="cadena-2"> <br>
+            </div>
+
+            <label for="" id="longitud-cad-2">Longitud :</label>
+            <div class="fila">
+                <label for="">cadena1 + cadena2 =</label>
+                <input type="text" id="resultado-concatenar-1" disabled>
+                <br>
+            </div>            
+
+            <div class="fila">
+                <label for="">cadena2 + cadena1 =</label>
+                <input type="text" id="resultado-concatenar-2" disabled>
+            </div>
+            
+
+            <button id="btn-ejercicio-1">Concatenar</button>
+        </section>
+
+        <section class="espacio-ejercicio" id="ejercicio-2">
+            <b class="fila">Ingrese lo que se solicita:</b>
+            <div class="fila">
+                <label for="">Alfabeto:</label>
+                <input value="abcdefghijkl" type="text" id="alfabeto">
+                <p>(max 15)</p>
+            </div>
+            <b class="fila">Nota: El alfabeto puede llevar sus elementos o no separador por comas(de ser usadas, tambien tendra que agregar una al final para poder incluirla en el alfabeto).</b>
+
+            <div class="fila">
+                <label for="">Cadena a Evaluar:</label>
+                <input value="Hola Mundo" type="text" id="cadena_evaluar">
+            </div>
+
+            <div class="fila">
+                <button id="btn-ejercicio-2">Analizar Cadena</button>
+            </div>
+
+            <b id="resultado_analisis"></b>
+            <p id="n_usos_vocales"></p>
+            <p id="vocales"></p>
+        </section>
+
+        <section class="espacio-ejercicio espacio-activo" id="ejercicio-3">
+             <b class="fila">Ingrese lo que se solicita:</b>
+            <div class="fila">
+                <label for="">Alfabeto(1,20):</label>
+                <input value="abcde" type="text" id="alfabeto_2">
+            </div>
+
+            <b class="fila">Nota: El alfabeto puede llevar sus elementos o no separador por comas. Pueden ser letras, dígitos, símbolos</b>
+
+            <div class="fila">
+                <label for="">Longitud de la cadena(L):</label>
+                <input type="number" id="longitud_cadena">
+            </div>
+
+            <div class="fila">
+                <button id="btn-ejercicio-3">Calcular Combinaciones</button>
+            </div>
+
+            <div class="fila">
+                <b>Numero maximo de <br>combinaciones posibles:</b>
+                <p id="numero_combinaciones"></p>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        // declaraciones
+        let seccion_activa = document.querySelector(".espacio-activo");
+        let titulo_activo = document.querySelector(".opcion-seleccion.activo")
+        let secciones_ejercicios = document.querySelectorAll(".espacio-ejercicio")
+
+        // ejercicio 1
+        let cad_1 = document.getElementById("cadena-1")
+        let cad_2 = document.getElementById("cadena-2")
+
+        let resultado_1_concatenar = document.getElementById("resultado-concatenar-1")
+        let resultado_2_concatenar = document.getElementById("resultado-concatenar-2")
+
+        let longitud_cad_1 = document.getElementById("longitud-cad-1")
+        let longitud_cad_2 = document.getElementById("longitud-cad-2")
+
+        // ejercicio 2
+        let alfabeto = document.getElementById("alfabeto")
+        let cadena_evaluar = document.getElementById("cadena_evaluar")
+        let pantalla_resultado_evaluacion = document.getElementById("resultado_analisis")
+        let pantalla_vocales = document.getElementById("vocales")
+        let pantalla_n_vocales = document.getElementById("n_usos_vocales")
+
+        const vocales = ["a","e","i","o","u"]
+
+        // ejercicio 3
+        let alfabeto_2 = document.getElementById("alfabeto_2")
+        let longitud_cadena = document.getElementById("longitud_cadena")
+        let pantalla_numero_combinaciones = document.getElementById("numero_combinaciones")
+    </script>
+
+    <script>
+        // Funciones de los ejercicios
+        function concatenar(e){
+            let concat_1 = cad_1.value + cad_2.value
+            let concat_2 = cad_2.value + cad_1.value
+            
+            resultado_1_concatenar.value = concat_1
+            resultado_2_concatenar.value = concat_2
+
+            longitud_cad_1.innerText = "Longitud : "+cad_1.value.length
+            longitud_cad_2.innerText = "Longitud : "+cad_2.value.length
+        }
+
+        function evaluarCadena(e){
+            const cadena = cadena_evaluar.value;
+            let alfabeto_procesado  = alfabeto.value.split(",")
+
+            if(alfabeto_procesado.length>1){
+                // esta usando una o varias comas
+                if(alfabeto_procesado[alfabeto_procesado.length-1]==""){
+                    // su alfabeto termina en coma, por lo tanto, tambien lo quiere como parte del alfabeto y no solo como separador                
+                    alfabeto_procesado = alfabeto_procesado.join("")+","
+                    print("caso 1")
+                }else{
+                    // unicamente usa la coma como separador
+                    alfabeto_procesado = alfabeto_procesado.join("")
+                    print("caso 2")
+                }
+            }else{
+                // no hay ninguna coma, sino que los caracteres estan uno despues del otro
+                alfabeto_procesado= alfabeto_procesado[0]
+            }
+
+            if(alfabeto_procesado.length>15){
+                // verificamos que no exceda el limite de caracteres
+                alert("El alfabeto es de maximo 15 caracteres!")
+                return 
+            }
+
+            for (let letra of alfabeto_procesado){
+                // recorremos los caracteres del alfabeto
+                let c =0
+                if(letra!="-"){
+                    for(let encuentro of alfabeto_procesado.matchAll(letra)){
+                        // recorremos todo el alfabeto en la iteracion
+                        c+=1
+                        if(c==2){
+                            // encontramos 2 caracteres iguales, por lo que hay que enviar un mensaje de error
+                            alert("No puedes repetir caracteres!")
+                            return
+                        }
+                    }
+                }
+            }
+            // contruimos el regez
+            const regex = RegExp(`^[${alfabeto_procesado}]{0,}$`)
+            // verificamos la validez de la cadena con el regex
+            // const es_cadena_valida = regex.test(cadena)
+
+            let letras_invalidas=[];
+            let n_invalidos = 0;
+            for(letra of cadena_evaluar.value){
+                // recorremos toda la cadena ingresada en busca de los caracteres que estan fuera del alfabeto
+                if(!regex.test(letra)){
+                    // encontramos uno de los caracteres invalidos, asi que lo almacenamos
+                    if(!letras_invalidas.includes(letra)){
+                        letras_invalidas = letras_invalidas.concat(letra)
+                    }
+                    n_invalidos+=1
+                }
+            }
+            const es_cadena_valida = (n_invalidos==0)
+            // mostramos el resultado de la evaluacion
+            pantalla_resultado_evaluacion.innerHTML = "La cadena, de "+ cadena.length +" caracteres, "+ ((es_cadena_valida)? "pertenece al Alfabeto": `NO pertenece al Alfabeto. <br>Tiene ${n_invalidos} caracteres fuera del alfabeto : [${letras_invalidas.join(", ")}]`)
+            
+            
+            let vocales_usadas = {};
+            let usos_vocal = 0;
+            // procedemos a buscar las vocales usadas
+            for(let vocal of vocales){
+                for (let letra of cadena){
+                    if(letra.toLocaleLowerCase()==vocal){
+                        // encontramos una vocalen la cadena, asi que la almacenamos y aumentamos el contador de vocales
+                        vocales_usadas[vocal]= (vocales_usadas[vocal] || 0) +1
+                        usos_vocal+=1
+                    }
+                }
+            }
+
+            // procedemos a mostrar las vocales usadas
+            pantalla_n_vocales.innerHTML = "Usaste "+usos_vocal+" veces las vocales:<br>"
+            pantalla_vocales.innerHTML = ""
+            for(let vocal of vocales){
+                n_usos = vocales_usadas[vocal]
+
+                if(n_usos!=undefined){
+                    // hay registro de la vocal de esta iteracion, por lo que debemos mostrar su informacion
+                    pantalla_vocales.innerHTML+=`\t${vocal} : ${n_usos} usos <br>`
+                }
+            }
+        }
+
+        function combinacionesPosibles(e){
+            if(alfabeto_2.value.length>20){
+                // verificamos que el alfabeto no exceda el limite de caracteres
+                alert("El maximo de caracteres del alfabeto es 20!")
+                return
+            }
+            // mostramos el numero de combinaciones posibles
+            pantalla_numero_combinaciones.innerText = `(|Σ|^L) = ${alfabeto_2.value.length} ^ ${longitud_cadena.value} = ${Math.pow(alfabeto_2.value.length, parseInt(longitud_cadena.value))}`
+        }
+    </script>
+
+    <script>
+        // asignacino de eventos
+        for (selector of document.getElementsByClassName("opcion-seleccion")){
+            selector.addEventListener("click",e=>{
+                const num_ejercicio = e.target.dataset.num_ejercicio;
+                let seccion_activar = secciones_ejercicios[parseInt(num_ejercicio)-1]
+
+                if(e.target.matches(".activo")){
+                    alert("No te quieras pasar de listo")
+                    return
+                }
+
+                if(seccion_activa){
+                    seccion_activa.classList.remove("espacio-activo")
+                    titulo_activo.classList.remove("activo")
+                    console.log(titulo_activo)
+                }
+
+                seccion_activa = seccion_activar
+                titulo_activo = e.target
+                seccion_activa.classList.add("espacio-activo")
+                e.target.classList.add("activo")   
+            })
+        }
+
+        document.getElementById("btn-ejercicio-1").addEventListener("click", concatenar)
+
+        document.getElementById("btn-ejercicio-2").addEventListener("click",evaluarCadena)
+        cadena_evaluar.addEventListener("change",evaluarCadena)
+        
+        document.getElementById("btn-ejercicio-3").addEventListener("click",combinacionesPosibles)
+    </script>
+</body>
+</html>

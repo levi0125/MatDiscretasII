@@ -1,0 +1,3 @@
+let alfabeto, cadena;
+
+alfabeto = ""
