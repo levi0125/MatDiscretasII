@@ -155,11 +155,16 @@
 
             <div class="fila">
                 <label for="">Longitud de la cadena(L):</label>
-                <input type="number" id="longitud_cadena">
+                <input value="2" type="number" id="longitud_cadena">
             </div>
 
             <div class="fila">
                 <button id="btn-ejercicio-3">Calcular Combinaciones</button>
+            </div>
+
+            <div class="fila">
+                <b>Cardinalidad |Σ| =</b>
+                <p id="cardinalidad"></p>
             </div>
 
             <div class="fila">
@@ -198,8 +203,10 @@
         let alfabeto_2 = document.getElementById("alfabeto_2")
         let longitud_cadena = document.getElementById("longitud_cadena")
         let pantalla_numero_combinaciones = document.getElementById("numero_combinaciones")
+        let pantalla_cardinalidad = document.getElementById("cardinalidad")
     </script>
 
+    <!-- javascript ⤴️ -->
     <script>
         // Funciones de los ejercicios
         function concatenar(e){
@@ -310,6 +317,7 @@
             }
             // mostramos el numero de combinaciones posibles
             pantalla_numero_combinaciones.innerText = `(|Σ|^L) = ${alfabeto_2.value.length} ^ ${longitud_cadena.value} = ${Math.pow(alfabeto_2.value.length, parseInt(longitud_cadena.value))}`
+            pantalla_cardinalidad.innerText = alfabeto_2.value.length
         }
     </script>
 
@@ -321,7 +329,7 @@
                 let seccion_activar = secciones_ejercicios[parseInt(num_ejercicio)-1]
 
                 if(e.target.matches(".activo")){
-                    alert("No te quieras pasar de listo")
+                    // alert("No te quieras pasar de listo")
                     return
                 }
 
